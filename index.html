@@ -9,9 +9,11 @@
   <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
 </head>
 <body onload="init()">
- 
+  <main>
     <div id="pokemonContainer" class="pokemon-container"></div>
-  
+    <button onclick="loadMorePokemon()" id="load-more" class="load-more-btn">Load More Pokemon</button>
+    <p id="loading-text" class="loading" style="display: none;">Loading...</p>
+ </main>
   <script src="./scripts/template.js"></script>
   <script src="script.js"></script>
 </body>

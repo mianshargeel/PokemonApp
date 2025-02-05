@@ -1,41 +1,78 @@
 .pokemon-container {
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin: 10px;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 20px;
-    text-align: center;
-    width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
+  background-color: #201692;
 }
-.pokemon-card{
-  background: linear-gradient(135deg, #ff9ff3, #feca57);
-  border-radius: 15px;
-  padding: 15px;
-  text-align: center;
+.pokemon-card {
   width: 180px;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s ease-in-out;
+  padding: 10px;
+  border-radius: 10px;
+  text-align: center;
+  color: white;
+  transition: transform 0.2s;
+  box-shadow: 5px 10px 5px rgba(0, 0, 0, 0.4);
 }
 .pokemon-card:hover {
   transform: scale(1.1);
   cursor: pointer;
 }
-.pokemon-card img {
-  width: 120px;
-  height: 120px;
-  object-fit: cover;
-  border-radius: 50%;
-  background: white;
-  padding: 8px;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+.load-more-btn {
+  margin: 20px auto;
+  padding: 12px 24px;
+  font-size: 18px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: white;
+  background: linear-gradient(45deg, #ff416c, #ff4b2b);
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0px 4px 10px rgba(255, 75, 43, 0.5);
 }
-.pokemon-card h3 {
-  color: #2f3542;
-  margin: 10px 0 5px;
+.load-more-btn:hover {
+  background: linear-gradient(45deg, #ff4b2b, #ff416c);
+  transform: translateY(-3px);
+  box-shadow: 0px 6px 15px rgba(255, 75, 43, 0.7);
 }
-.pokemon-card p {
-  color: #57606f;
-  font-size: 14px;
+.load-more-btn:active {
+  transform: translateY(1px);
+  box-shadow: 0px 2px 5px rgba(255, 75, 43, 0.5);
 }
+.loading {
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+.pokemon-types{
+  display: flex;
+  gap: 5px;
+}
+.poko-type{
+  font-size: 10px;
+  padding: 5px 10px;
+    font-weight: bold;
+    text-transform: capitalize;
+    color: white;
+    border-radius: 12px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+}
+.poko-id{
+  font-size: 10px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
