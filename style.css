@@ -137,7 +137,7 @@
   width: 120px;
   padding-bottom: 10px;
 }
-.close-btn{
+/* .close-btn{
   cursor: pointer;
   font-size: 24px;
   padding: 5px 10px;
@@ -145,7 +145,7 @@
 .close-btn:hover{
   box-shadow: 1px 1px -1px;
   transform: scale(1.1);
-}
+} */
 
 .leftRight-arrows{
   width: 20px;
