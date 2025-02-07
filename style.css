@@ -1,10 +1,46 @@
+.myNav{
+  background-color: #201692;
+}
+.navText{
+  color: #fff !important;
+  font-size: 30px;
+  font-weight: bold;
+  padding-left: 20px;
+  transition: transform 0.2s;
+}
+.navText:hover{
+  cursor: pointer;
+  transform: scale(1.1);
+}
+.menu{
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding-right: 30px;
+}
+.navMenu{
+  width: 30px;
+  height: 1px;
+  background-color: #fff;
+}
+.menu:hover{
+  cursor: pointer;
+  transform: scale(1.1);
+  transition: transform 0.2s;
+}
+.pokemon-heading{
+  color: #201692;
+  text-align: center;
+  margin-top: 35px;
+  font-size: 56px;
+}
 .pokemon-container {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 20px;
   padding: 20px;
-  background-color: #201692;
+  margin-top: 40px;
 }
 .pokemon-card {
   width: 180px;
@@ -73,7 +109,6 @@
   align-items: center;
 }
 .pokemon-model{
-  background: white;
   padding: 20px;
   border-radius: 10px;
   text-align: center;
@@ -87,6 +122,13 @@
 }
 .model-content{
   color: #fff;
+}
+.model-content-details{
+  background: #fff;
+  color: black;
+  border-radius: 10px;
+  padding: 20px 0 3px 0;
+  margin: 17px 0 18px 0;
 }
 .poko-header span{
   font-weight: bold;
@@ -118,8 +160,16 @@
   align-items: center;
 }
 
-
-
+@media screen and (max-width: 600px){
+  .pokemon-heading{
+    font-size: 44px;
+  }
+}
+@media screen and (max-width: 500px){
+  .pokemon-heading{
+    font-size: 36px;
+  }
+}
 
 
 

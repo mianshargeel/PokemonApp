@@ -12,11 +12,13 @@ function showPokemonModelAndDetailsHtml(pokemon) {
     </div>
     <div class="model-content">
       <img class='model-img' src="${pokemon.sprites.other.dream_world.front_default}" alt="${pokemon.name}" />
-      <p>ID ${pokemon.id}</p>
-      <p><strong>Type:</strong> ${pokemon.types.map(t => t.type.name).join(', ')}</p>
-      <p><strong>HP:</strong> ${pokemon.stats[0].base_stat}</p>
-      <p><strong>Attack:</strong> ${pokemon.stats[1].base_stat}</p>
-      <p><strong>Defense:</strong> ${pokemon.stats[2].base_stat}</p>
+      <div class="model-content-details">
+        <p>ID: ${pokemon.id}</p>
+        <p><strong>Type:</strong> ${pokemon.types.map(t => t.type.name).join(', ')}</p>
+        <p><strong>HP:</strong> ${pokemon.stats[0].base_stat}</p>
+        <p><strong>Attack:</strong> ${pokemon.stats[1].base_stat}</p>
+        <p><strong>Defense:</strong> ${pokemon.stats[2].base_stat}</p>
+      </div>
     </div>
     <div class='poko-arrows'>
       <img onclick='getLastPokemonCard()' class='leftRight-arrows' src="./assets/img/left.png" alt="" />
