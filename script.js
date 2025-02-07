@@ -81,23 +81,20 @@ function creatingPokemonTypes(pokemon) {
 function loadMorePokemon() {
   fetchPokemon();
 }
-//next functionalities Overlay/Model and there details
+
 function showPokemonModelAndDetails(pokemon) {
-  currentPokemonIndex = allPokemons.results.findIndex(p => p.name === pokemon.name); //getting the index of clicked card
-  // console.log(currentPokemonIndex);
-  
+  currentPokemonIndex = allPokemons.results.findIndex(p => p.name === pokemon.name); 
   let overlay = document.createElement('div');
   let model = document.createElement('div');
   overlay.className = 'pokemon-overlay';
   model.className = 'pokemon-model';
   model.style.backgroundColor = colours[pokemon.types[0].type.name] || '#fff';
-
   model.innerHTML = showPokemonModelAndDetailsHtml(pokemon);
   overlay.appendChild(model);
   document.body.appendChild(overlay);
   document.body.classList.add('no-scroll');
-  updatePokemonModel(pokemon); //afetr clicking on tabs on Model updating it
-  overlay.onclick = hideOverlayWhenClickBesideModel; // Assign function reference (don't call it immediately)
+  updatePokemonModel(pokemon); 
+  overlay.onclick = hideOverlayWhenClickBesideModel; 
 }
 
 function hideOverlayWhenClickBesideModel(e) {
@@ -139,45 +136,33 @@ async function updatePokemonModel(pokemon) {
   fetchMoves(pokemon);
 }
 
-function showTab(tabId) { //tabId is the string argument passed to showTab(tabId), which represents the ID of the tab to be activated.Example: If the "Base Stats" button is clicked, tabId = 'stats'.
+function showTab(tabId) { 
   document.querySelectorAll('.tab-pane').forEach(tab => tab.classList.remove('active')); //all four tabs in Model
   document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
 
   document.getElementById(tabId).classList.add('active');
-  document.querySelector(`button[onclick="showTab('${tabId}')"]`).classList.add('active');
+  document.querySelector(`span[onclick="showTab('${tabId}')"]`).classList.add('active');
 }
 
-
-//Fetch & Display Evolution and Moves
 async function fetchEvolutionChain(pokemon) {
   try {
-    let speciesResponse = await fetch(pokemon.species.url); //in species.url we get evolution_chain.url
+    let speciesResponse = await fetch(pokemon.species.url);
     let speciesData = await speciesResponse.json();
-    // console.log("Species Data:", speciesData);
     let evolutionResponse = await fetch(speciesData.evolution_chain.url);
     let evolutionData = await evolutionResponse.json();
-    console.log("Evolution Chain Data:", evolutionData);
-    // Extracting evolution details
     let evoChain = [];
     let evoStage = evolutionData.chain;
-
     while (evoStage) { 
       evoChain.push(evoStage.species.name);
       evoStage = evoStage.evolves_to.length > 0 ? evoStage.evolves_to[0] : null;
     }
-
-    // console.log("🌟 Evolution Chain:", evoChain);
     let evolutionElement = document.getElementById('evolution');
     evolutionElement.innerHTML = `<p>${evoChain.join(' → ')}</p>`;
-  } catch (error) {
-    console.error("❌ Error fetching evolution chain:", error);
-  }
+  } catch (error) { console.error("Error fetching evolution chain:", error) }
 }
 
 function fetchMoves(pokemon) {
-  let movesList = pokemon.moves.slice(0, 10).map(move => move.move.name).join(', '); //getting from 0 to 10th ele
-  console.log(pokemon.moves.slice(0, 10));
-  
+  let movesList = pokemon.moves.slice(0, 10).map(move => move.move.name).join(', ');   
   document.getElementById('moves').innerHTML = `<p>${movesList}</p>`;
 }
 
