@@ -1,7 +1,6 @@
 .myNav {
   background-color: #201692;
   padding: 10px 20px;
-  position: relative;
 }
 
 .nav-flex {
@@ -9,57 +8,28 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  flex-wrap: wrap;
+  padding: 0px 20px;
 }
 
 .navText {
   color: #fff !important;
-  font-size: 30px;
+  font-size: 30px !important;
   font-weight: bold;
   transition: transform 0.2s;
 }
-
+.poko-logo-img{
+  width: 150px;
+}
 .navText:hover {
   cursor: pointer;
   transform: scale(1.1);
 }
-
-/* Hide menu list initially */
-.menu-list {
-  display: no;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.menu-list li {
-  margin: 0 15px;
-}
-
-.menu-list .active a {
-  font-weight: bold;
-}
-
-.menu-list li:hover {
-  cursor: pointer;
-  transform: scale(1.1);
-  transition: transform 0.2s;
-}
-
-.search-input {
+.search-form{
   display: flex;
   gap: 3px;
 }
 
-/* Menu Button - Hidden on large screens */
-.menu-btn {
-  display: none;
-  background: none;
-  border: none;
-  font-size: 24px;
-  color: white;
-  cursor: pointer;
-}
+
 /* end of Nav-Bar */
 .pokemon-heading{
   color: #201692;
@@ -129,42 +99,18 @@
     border-radius: 12px;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
 }
-/* Hide menu and show button below 1020px */
-@media (max-width: 1020px) {
-  .menu-list {
-    display: none; /* Hide menu */
-    flex-direction: column;
-    background: #201692;
-    position: absolute;
-    top: 60px;
-    right: 20px;
-    width: 200px;
-    border-radius: 5px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
-  }
-
-  .menu-list li {
-    text-align: center;
-    padding: 10px 0;
-  }
-
-  .menu-list li a {
-    display: block;
-    padding: 10px;
-    color: white;
-    text-decoration: none;
-  }
-
-  .menu-list li:hover {
-    background: #3229b7;
-  }
-
-  /* Show Menu Button */
-  .menu-btn {
-    display: block;
-  }
+.search-error-popup{
+  width: 400px;
+  height: 50px;
+  color: #fff;
+  background-color: #201692;
+  text-align: center;
+  border-radius: 30px;
+  box-shadow: 0px 2px 5px rgba(0,0,0,0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-
 @media screen and (max-width: 600px){
   .pokemon-heading{
     font-size: 44px;
@@ -174,7 +120,16 @@
   .pokemon-heading{
     font-size: 36px;
   }
+  .nav-flex {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 10px;
+  }
+  .search-error-popup{
+    height: 70px;
+  }
 }
+
 
 
 

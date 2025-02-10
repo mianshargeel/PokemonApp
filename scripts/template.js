@@ -8,7 +8,7 @@ function renderPokemonCardHtml(pokemon) {
 function showPokemonModelAndDetailsHtml(pokemon) {
   return `
     <div class="poko-header">
-      <h3>${pokemon.name}</h3> <span>#${pokemon.id}</span> 
+      <h3>${pokemon.name.toUpperCase()}</h3> <span>#${pokemon.id}</span> 
     </div>
     <div class="model-content">
       <img class='model-img' src="${pokemon.sprites.other.dream_world.front_default}" alt="${pokemon.name}" />
@@ -39,7 +39,7 @@ function showPokemonModelAndDetailsHtml(pokemon) {
           </div>
 
           <div id="evolution" class="tab-pane">
-            <p>Loading evolution data...</p>
+            <canvas id="evolutionChart"></canvas>
           </div>
 
           <div id="moves" class="tab-pane">

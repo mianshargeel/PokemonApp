@@ -34,7 +34,6 @@ function init() {
 async function fetchPokemon() {
   loadTextRef.style.display = 'block'; 
   loadMoreButtonRef.style.display = 'none';  
-  pokemonContainerRef.innerHTML = '';
   try {
     let response = await fetch(`https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${limit}`);
     let data = await response.json();
@@ -153,16 +152,28 @@ async function fetchEvolutionChain(pokemon) {
     let speciesData = await speciesResponse.json();
     let evolutionResponse = await fetch(speciesData.evolution_chain.url);
     let evolutionData = await evolutionResponse.json();
+
     let evoChain = [];
     let evoStage = evolutionData.chain;
+    let evolutionLevels = [];
+
+    let level = 1; // Start with level 1 for the base form
+
     while (evoStage) { 
       evoChain.push(evoStage.species.name);
+      evolutionLevels.push(level);
       evoStage = evoStage.evolves_to.length > 0 ? evoStage.evolves_to[0] : null;
+      level += 10; // Increase level (can be adjusted based on real data)
     }
-    let evolutionElement = document.getElementById('evolution');
-    evolutionElement.innerHTML = `<p>${evoChain.join(' → ')}</p>`;
-  } catch (error) { console.error("Error fetching evolution chain:", error) }
+
+    // Render evolution chart inside the 'evolution' tab
+    renderEvolutionChart(evoChain, evolutionLevels);
+    
+  } catch (error) { 
+    console.error("Error fetching evolution chain:", error);
+  }
 }
+
 
 function fetchMoves(pokemon) {
   let movesList = pokemon.moves.slice(0, 10).map(move => move.move.name).join(', ');   
@@ -179,31 +190,67 @@ function toggleMenu() {
 }
 
 async function searchPokemon() {
-  let searchPokemonRef = document.getElementById('poko-search');
-  let value = searchPokemonRef.value.toLowerCase().trim(); // Get the search value and convert to lowercase
-
-  // Clear the existing cards and error message
+  let value  = document.getElementById('poko-search').value.toLowerCase().trim();
   pokemonContainerRef.innerHTML = '';
 
-  if (value === '') {
-    // If the search bar is empty, show all Pokémon
-    arrayOfAllPokemons.forEach(pokemon => {
-      renderPokemonCard(pokemon);
-    });
-    return;
+  if (value === '' || value.length < 3) {
+    return arrayOfAllPokemons.forEach(pokemon => renderPokemonCard(pokemon));
   }
+  try {
+    let response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=1000`);
+    let data = await response.json();
+    let filteredPokemons = data.results.filter(pokemon => pokemon.name.toLowerCase().includes(value));
+    console.log(filteredPokemons);
 
-  // Filter the allPokemons array based on the search value
-  let filteredPokemons = arrayOfAllPokemons.filter(pokemon => pokemon.name.toLowerCase().includes(value));
-
-  if (filteredPokemons.length > 0) {
-    // Render the filtered Pokémon cards
-    filteredPokemons.forEach(pokemon => {
-      renderPokemonCard(pokemon);
-    });
-  } else {
-    // Display a message if no Pokémon match the search
-    pokemonContainerRef.innerHTML = `<p>No Pokémon found with the name "${value}".</p>`;
+    if (!filteredPokemons.length) return showingSearchErrorMsg(value);
+    for (pokemon of filteredPokemons) {
+      let res = await fetch(pokemon.url);
+      let pokemondetails = await res.json();
+      renderPokemonCard(pokemondetails);
+    }
+  } catch (error) {
+     console.error("Error fetching Pokémon:", error);
   }
 }
 
+
+function showingSearchErrorMsg(value) {
+  let errorMsg = document.createElement('p');
+  errorMsg.classList.add('search-error-popup');
+  errorMsg.innerHTML = `There is no Pokemon exit with the: "${value}"`;
+  pokemonContainerRef.appendChild(errorMsg);
+  setTimeout(() => {
+    errorMsg.remove();
+  }, 2000);
+}
+
+function renderEvolutionChart(evoChain, evolutionLevels) {
+  let ctx = document.getElementById('evolutionChart').getContext('2d');
+
+  // Destroy the old chart if it exists (to prevent duplicate charts)
+  if (window.evolutionChart instanceof Chart) {
+    window.evolutionChart.destroy();
+  }
+
+  window.evolutionChart = new Chart(ctx, {
+    type: 'line', // You can change it to 'bar', 'radar', 'line',etc.
+    data: {
+      labels: evoChain, // Pokémon names
+      datasets: [{
+        label: 'Evolution Level',
+        data: evolutionLevels, // Evolution levels
+        borderColor: 'rgba(54, 162, 235, 1)',
+        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+}

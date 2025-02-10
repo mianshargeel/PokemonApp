@@ -4,36 +4,28 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pokedex</title>
-  <link rel="shortcut icon" href="./assets/img/poki.png" type="image/x-icon">
+  <link rel="shortcut icon" href="./assets/img/logo1.png" type="image/x-icon">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="./styles/standard.css">
   <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="./styles/modelTabs.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 <body onload="init()">
- <nav class="navbar myNav">
-  <div class="nav-flex">
-    <a class="navbar-brand navText" href="#">Pokedex</a>
-    <!-- Menu List -->
-    <!-- <ul class="nav menu-list">
-      <li class="active"><a href="#">Home</a></li>
-      <li><a href="#">Video Games & Apps</a></li>
-      <li><a href="#">Trading Card Game</a></li>
-      <li><a href="#">Animation</a></li>
-      <li><a href="#">News</a></li>
-    </ul> -->
-    <!-- Menu Button -->
-    <button class="menu-btn" onclick="toggleMenu()">☰</button>
-
-    <!-- Search Bar -->
-    <form class="navbar-form search-input" action="" onsubmit="event.preventDefault(); searchPokemon();">
-      <div class="form-group">
-        <input id="poko-search" type="text" class="form-control" placeholder="Search">
-      </div>
-      <button type="submit" class="btn btn-success">Search</button>
-    </form>
-  </div>
-</nav>
+    
+  <nav class="navbar myNav">
+    <div class="nav-flex">
+      <a class="navbar-brand navText" href="./index.html"> <img class="poko-logo-img" src="./assets/img/logo.png" alt="">Pokedex</a>
+      <!-- Search Bar -->
+      <form class="navbar-form search-form" action="" onsubmit="event.preventDefault(); searchPokemon();">
+        <div class="form-group">
+          <input id="poko-search" type="text" class="form-control" placeholder="Enter at least 3 letters" minlength="3" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+      </form>
+    </div>
+  </nav>
 
 
   <h1 class="pokemon-heading">Pokemon Gallaery</h1>

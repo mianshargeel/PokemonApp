@@ -10,6 +10,8 @@ body{
   text-align: center;
   background-color: white !important;
   min-height: 100vh;
+  /* scrollbar-width: thin !important;
+  scrollbar-color: #201692 !important; */
 }
 a{
   text-decoration: none !important;
@@ -18,4 +20,9 @@ a{
 }
 main{
   text-align: center;
+}
+
+body::-webkit-scrollbar {
+  width: 8px; /* Adjust scrollbar width */
+  background-color: #201692 !important;
 }
