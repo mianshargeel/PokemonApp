@@ -146,35 +146,6 @@ function showTab(tabId) {
   document.querySelector(`span[onclick="showTab('${tabId}')"]`).classList.add('active');
 }
 
-async function fetchEvolutionChain(pokemon) {
-  try {
-    let speciesResponse = await fetch(pokemon.species.url);
-    let speciesData = await speciesResponse.json();
-    let evolutionResponse = await fetch(speciesData.evolution_chain.url);
-    let evolutionData = await evolutionResponse.json();
-
-    let evoChain = [];
-    let evoStage = evolutionData.chain;
-    let evolutionLevels = [];
-
-    let level = 1; // Start with level 1 for the base form
-
-    while (evoStage) { 
-      evoChain.push(evoStage.species.name);
-      evolutionLevels.push(level);
-      evoStage = evoStage.evolves_to.length > 0 ? evoStage.evolves_to[0] : null;
-      level += 10; // Increase level (can be adjusted based on real data)
-    }
-
-    // Render evolution chart inside the 'evolution' tab
-    renderEvolutionChart(evoChain, evolutionLevels);
-    
-  } catch (error) { 
-    console.error("Error fetching evolution chain:", error);
-  }
-}
-
-
 function fetchMoves(pokemon) {
   let movesList = pokemon.moves.slice(0, 10).map(move => move.move.name).join(', ');   
   document.getElementById('moves').innerHTML = `<p>${movesList}</p>`;
@@ -192,27 +163,17 @@ function toggleMenu() {
 async function searchPokemon() {
   let value  = document.getElementById('poko-search').value.toLowerCase().trim();
   pokemonContainerRef.innerHTML = '';
-
-  if (value === '' || value.length < 3) {
-    return arrayOfAllPokemons.forEach(pokemon => renderPokemonCard(pokemon));
-  }
+  if (value === '' || value.length < 3) { return arrayOfAllPokemons.forEach(pokemon => renderPokemonCard(pokemon)) }
   try {
     let response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=1000`);
     let data = await response.json();
     let filteredPokemons = data.results.filter(pokemon => pokemon.name.toLowerCase().includes(value));
-    console.log(filteredPokemons);
-
     if (!filteredPokemons.length) return showingSearchErrorMsg(value);
-    for (pokemon of filteredPokemons) {
-      let res = await fetch(pokemon.url);
-      let pokemondetails = await res.json();
-      renderPokemonCard(pokemondetails);
-    }
+    for (let p of filteredPokemons) renderPokemonCard(await (await fetch(p.url)).json());
   } catch (error) {
      console.error("Error fetching Pokémon:", error);
   }
 }
-
 
 function showingSearchErrorMsg(value) {
   let errorMsg = document.createElement('p');
@@ -224,6 +185,28 @@ function showingSearchErrorMsg(value) {
   }, 2000);
 }
 
+async function fetchEvolutionChain(pokemon) {
+  try {
+    let speciesResponse = await ((await fetch(pokemon.species.url)).json());
+    // let speciesData = await speciesResponse.json();
+    let evolutionData = await (await fetch(speciesResponse.evolution_chain.url)).json();
+    // let evolutionData = await evolutionResponse.json();
+    let evoChain = [];
+    let evoStage = evolutionData.chain;
+    let evolutionLevels = [];
+    let level = 1; 
+    while (evoStage) { 
+      evoChain.push(evoStage.species.name);
+      evolutionLevels.push(level);
+      evoStage = evoStage.evolves_to.length > 0 ? evoStage.evolves_to[0] : null;
+      level += 10;
+    }
+    renderEvolutionChart(evoChain, evolutionLevels); 
+  } catch (error) { 
+    console.error("Error fetching evolution chain:", error);
+  }
+}
+
 function renderEvolutionChart(evoChain, evolutionLevels) {
   let ctx = document.getElementById('evolutionChart').getContext('2d');
 
@@ -233,7 +216,7 @@ function renderEvolutionChart(evoChain, evolutionLevels) {
   }
 
   window.evolutionChart = new Chart(ctx, {
-    type: 'line', // You can change it to 'bar', 'radar', 'line',etc.
+    type: 'bar', // You can change it to 'bar', 'radar', 'line',etc.
     data: {
       labels: evoChain, // Pokémon names
       datasets: [{
