@@ -22,8 +22,9 @@ let pokemonContainerRef = document.getElementById('pokemonContainer');
 let loadMoreButtonRef = document.getElementById('load-more');
 let loadTextRef = document.getElementById('loading-text');
 let offset = 0;
-let limit = 30;
+let limit = 20;
 let allPokemons = [];
+let arrayOfAllPokemons = [];
 let currentPokemonIndex = 0;
  
 function init() {
@@ -33,6 +34,7 @@ function init() {
 async function fetchPokemon() {
   loadTextRef.style.display = 'block'; 
   loadMoreButtonRef.style.display = 'none';  
+  pokemonContainerRef.innerHTML = '';
   try {
     let response = await fetch(`https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${limit}`);
     let data = await response.json();
@@ -41,6 +43,7 @@ async function fetchPokemon() {
     for (let i = 0; i < results.length; i++) {
       let res = await fetch(results[i].url);
       let pokemonDetails = await res.json();
+      arrayOfAllPokemons.push(pokemonDetails);//using this array in searchPokemon()
       setTimeout(() => {
         renderPokemonCard(pokemonDetails);
         loadTextRef.style.display = 'none';
@@ -164,5 +167,43 @@ async function fetchEvolutionChain(pokemon) {
 function fetchMoves(pokemon) {
   let movesList = pokemon.moves.slice(0, 10).map(move => move.move.name).join(', ');   
   document.getElementById('moves').innerHTML = `<p>${movesList}</p>`;
+}
+
+function toggleMenu() {
+  const menu = document.querySelector(".menu-list");
+  if (menu.style.display === "none" || menu.style.display === "") {
+    menu.style.display = "block";
+  } else {
+    menu.style.display = "none";
+  }
+}
+
+async function searchPokemon() {
+  let searchPokemonRef = document.getElementById('poko-search');
+  let value = searchPokemonRef.value.toLowerCase().trim(); // Get the search value and convert to lowercase
+
+  // Clear the existing cards and error message
+  pokemonContainerRef.innerHTML = '';
+
+  if (value === '') {
+    // If the search bar is empty, show all Pokémon
+    arrayOfAllPokemons.forEach(pokemon => {
+      renderPokemonCard(pokemon);
+    });
+    return;
+  }
+
+  // Filter the allPokemons array based on the search value
+  let filteredPokemons = arrayOfAllPokemons.filter(pokemon => pokemon.name.toLowerCase().includes(value));
+
+  if (filteredPokemons.length > 0) {
+    // Render the filtered Pokémon cards
+    filteredPokemons.forEach(pokemon => {
+      renderPokemonCard(pokemon);
+    });
+  } else {
+    // Display a message if no Pokémon match the search
+    pokemonContainerRef.innerHTML = `<p>No Pokémon found with the name "${value}".</p>`;
+  }
 }
 

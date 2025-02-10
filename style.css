@@ -1,33 +1,66 @@
-.myNav{
+.myNav {
   background-color: #201692;
+  padding: 10px 20px;
+  position: relative;
 }
-.navText{
+
+.nav-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.navText {
   color: #fff !important;
   font-size: 30px;
   font-weight: bold;
-  padding-left: 20px;
   transition: transform 0.2s;
 }
-.navText:hover{
+
+.navText:hover {
   cursor: pointer;
   transform: scale(1.1);
 }
-.menu{
+
+/* Hide menu list initially */
+.menu-list {
+  display: no;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.menu-list li {
+  margin: 0 15px;
+}
+
+.menu-list .active a {
+  font-weight: bold;
+}
+
+.menu-list li:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+  transition: transform 0.2s;
+}
+
+.search-input {
   display: flex;
-  flex-direction: column;
-  gap: 5px;
-  padding-right: 30px;
+  gap: 3px;
 }
-.navMenu{
-  width: 30px;
-  height: 1px;
-  background-color: #fff;
-}
-.menu:hover{
+
+/* Menu Button - Hidden on large screens */
+.menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: white;
   cursor: pointer;
-  transform: scale(1.1);
-  transition: transform 0.2s;
 }
+/* end of Nav-Bar */
 .pokemon-heading{
   color: #201692;
   text-align: center;
@@ -96,7 +129,41 @@
     border-radius: 12px;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
 }
+/* Hide menu and show button below 1020px */
+@media (max-width: 1020px) {
+  .menu-list {
+    display: none; /* Hide menu */
+    flex-direction: column;
+    background: #201692;
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    width: 200px;
+    border-radius: 5px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+  }
 
+  .menu-list li {
+    text-align: center;
+    padding: 10px 0;
+  }
+
+  .menu-list li a {
+    display: block;
+    padding: 10px;
+    color: white;
+    text-decoration: none;
+  }
+
+  .menu-list li:hover {
+    background: #3229b7;
+  }
+
+  /* Show Menu Button */
+  .menu-btn {
+    display: block;
+  }
+}
 
 @media screen and (max-width: 600px){
   .pokemon-heading{
