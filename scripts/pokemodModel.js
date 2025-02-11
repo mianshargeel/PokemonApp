@@ -1,5 +1,9 @@
 function showPokemonModelAndDetails(pokemon) {
-  currentPokemonIndex = allPokemons.results.findIndex(p => p.name === pokemon.name); 
+  currentPokemonIndex = arrayOfAllPokemons.findIndex(p => p.name === pokemon.name); 
+  console.log(currentPokemonIndex);
+  console.log( pokemon.name);
+
+  
   let overlay = document.createElement('div');
   let model = document.createElement('div');
   overlay.className = 'pokemon-overlay';
@@ -22,10 +26,11 @@ function hideOverlayWhenClickBesideModel(e) {
 }
 
 async function getNextPokemonCard() {
-  if (currentPokemonIndex < allPokemons.results.length - 1) {
+  if (currentPokemonIndex < arrayOfAllPokemons.length - 1) {
     currentPokemonIndex++;
-    let response = await fetch(allPokemons.results[currentPokemonIndex].url);
-    let nextPokemon = await response.json();
+    let nextPokemon = arrayOfAllPokemons[currentPokemonIndex]; // Directly use the Pokémon object
+    console.log(arrayOfAllPokemons[currentPokemonIndex]);
+    
     updatePokemonModel(nextPokemon);
   } 
 }
@@ -33,8 +38,9 @@ async function getNextPokemonCard() {
 async function getLastPokemonCard() {
   if (currentPokemonIndex > 0) {
     currentPokemonIndex--;
-    let response = await fetch(allPokemons.results[currentPokemonIndex].url);
-    let prevPokemon = await response.json();
+    let prevPokemon = arrayOfAllPokemons[currentPokemonIndex]; // Directly use the Pokémon object
+    console.log(arrayOfAllPokemons[currentPokemonIndex]);
+
     updatePokemonModel(prevPokemon);
   } 
 }

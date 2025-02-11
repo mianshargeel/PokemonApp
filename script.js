@@ -23,36 +23,55 @@ let loadMoreButtonRef = document.getElementById('load-more');
 let loadTextRef = document.getElementById('loading-text');
 let offset = 0;
 let limit = 20;
-let allPokemons = [];
 let arrayOfAllPokemons = [];
 let currentPokemonIndex = 0;
  
-function init() {
+function init() { 
   fetchPokemon();
 }
 
-async function fetchPokemonDetails(url) {
-  let res = await fetch(url);
-  let pokemonDetails = await res.json();
-  arrayOfAllPokemons.push(pokemonDetails);
-  setTimeout(() => {
-    renderPokemonCard(pokemonDetails);
-    loadTextRef.style.display = 'none';
-    loadMoreButtonRef.style.display = 'block';
-  }, 2000);
-}
+// async function fetchPokemonDetails(url) {
+//   let res = await fetch(url);
+//   let pokemonDetails = await res.json();
+//   arrayOfAllPokemons.push(pokemonDetails);
+//   setTimeout(() => {
+//     renderPokemonCard(pokemonDetails);
+//     loadTextRef.style.display = 'none';
+//     loadMoreButtonRef.style.display = 'block';
+//   }, 2000);
+// }
 
 async function fetchPokemon() {
   loadTextRef.style.display = 'block';
   loadMoreButtonRef.style.display = 'none';
   try {
     let response = await fetch(`https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${limit}`);
-    allPokemons= await response.json();
-    await Promise.all(allPokemons.results.map(pokemon => fetchPokemonDetails(pokemon.url)));  
+    allPokemons = await response.json();
+
+    // Fetch details for all Pokémon in the current batch
+    let pokemonDetails = await Promise.all(
+      allPokemons.results.map(pokemon => fetch(pokemon.url).then(res => res.json()))
+    );
+
+    // Add Pokémon details to arrayOfAllPokemons in the correct order
+    arrayOfAllPokemons.push(...pokemonDetails);
+
+    // Sort arrayOfAllPokemons by Pokémon ID
+    arrayOfAllPokemons.sort((a, b) => a.id - b.id);
+
+    // Render Pokémon cards
+    pokemonDetails.forEach(pokemon => renderPokemonCard(pokemon));
+
+    loadTextRef.style.display = 'none';
+    loadMoreButtonRef.style.display = 'block';
   } catch (error) {
     loadTextRef.innerHTML = `Error Fetching Pokémon: ${error}`;
   }
   offset += limit;
+
+  // Debugging: Log the array after loading more Pokémon
+  console.log("All Pokémon Fetched So Far:", arrayOfAllPokemons);
+  console.log("Pokémon IDs:", arrayOfAllPokemons.map(p => p.id));
 }
 
 function renderPokemonCard(pokemon) {
