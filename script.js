@@ -30,48 +30,27 @@ function init() {
   fetchPokemon();
 }
 
-// async function fetchPokemonDetails(url) {
-//   let res = await fetch(url);
-//   let pokemonDetails = await res.json();
-//   arrayOfAllPokemons.push(pokemonDetails);
-//   setTimeout(() => {
-//     renderPokemonCard(pokemonDetails);
-//     loadTextRef.style.display = 'none';
-//     loadMoreButtonRef.style.display = 'block';
-//   }, 2000);
-// }
-
-async function fetchPokemon() {
+async function fetchPokemonDetails(pokemonList) {
   loadTextRef.style.display = 'block';
   loadMoreButtonRef.style.display = 'none';
+  return await Promise.all(
+    pokemonList.results.map(pokemon => fetch(pokemon.url).then(res => res.json()))
+  );
+}
+
+async function fetchPokemon() {
   try {
     let response = await fetch(`https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${limit}`);
-    allPokemons = await response.json();
-
-    // Fetch details for all Pokémon in the current batch
-    let pokemonDetails = await Promise.all(
-      allPokemons.results.map(pokemon => fetch(pokemon.url).then(res => res.json()))
-    );
-
-    // Add Pokémon details to arrayOfAllPokemons in the correct order
+    let pokemonList = await response.json();
+    let pokemonDetails = await fetchPokemonDetails(pokemonList);
     arrayOfAllPokemons.push(...pokemonDetails);
-
-    // Sort arrayOfAllPokemons by Pokémon ID
     arrayOfAllPokemons.sort((a, b) => a.id - b.id);
-
-    // Render Pokémon cards
     pokemonDetails.forEach(pokemon => renderPokemonCard(pokemon));
-
     loadTextRef.style.display = 'none';
     loadMoreButtonRef.style.display = 'block';
   } catch (error) {
     loadTextRef.innerHTML = `Error Fetching Pokémon: ${error}`;
-  }
-  offset += limit;
-
-  // Debugging: Log the array after loading more Pokémon
-  console.log("All Pokémon Fetched So Far:", arrayOfAllPokemons);
-  console.log("Pokémon IDs:", arrayOfAllPokemons.map(p => p.id));
+  }offset += limit;
 }
 
 function renderPokemonCard(pokemon) {
