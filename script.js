@@ -31,29 +31,33 @@ function init() {
   fetchPokemon();
 }
 
+async function fetchPokemonDetails(url) {//each fetchPokemonDetails(url) returns a promise because it is an async function.
+  let res = await fetch(url);
+  let pokemonDetails = await res.json();
+  arrayOfAllPokemons.push(pokemonDetails);
+  setTimeout(() => {
+    renderPokemonCard(pokemonDetails);
+    loadTextRef.style.display = 'none';
+    loadMoreButtonRef.style.display = 'block';
+  }, 2000);
+}
+
 async function fetchPokemon() {
-  loadTextRef.style.display = 'block'; 
-  loadMoreButtonRef.style.display = 'none';  
+  loadTextRef.style.display = 'block';
+  loadMoreButtonRef.style.display = 'none';
   try {
     let response = await fetch(`https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${limit}`);
     let data = await response.json();
     allPokemons = data;
-    let results = data.results;
-    for (let i = 0; i < results.length; i++) {
-      let res = await fetch(results[i].url);
-      let pokemonDetails = await res.json();
-      arrayOfAllPokemons.push(pokemonDetails);//using this array in searchPokemon()
-      setTimeout(() => {
-        renderPokemonCard(pokemonDetails);
-        loadTextRef.style.display = 'none';
-        loadMoreButtonRef.style.display = 'block';
-      }, 2000);
-    }
+    await Promise.all(data.results.map(pokemon => fetchPokemonDetails(pokemon.url)));
+    //Promise.all([...]) takes an array of promises and waits for all of them to resolve.It fetches all Pokémon details in parallel.It ensures that fetchPokemon() does not continue until all Pokémon details are retrieved.
+
   } catch (error) {
-    loadTextRef.innerHTML = `Error Fetching Pokrmon:  ${error}`;
-  } 
-  offset += limit; 
+    loadTextRef.innerHTML = `Error Fetching Pokémon: ${error}`;
+  }
+  offset += limit;
 }
+
 
 function renderPokemonCard(pokemon) {
   let card = document.createElement('div');
@@ -108,8 +112,6 @@ function hideOverlayWhenClickBesideModel(e) {
 }
 
 async function getNextPokemonCard() {
-  console.log(currentPokemonIndex);
-
   if (currentPokemonIndex < allPokemons.results.length - 1) {
     currentPokemonIndex++;
     let response = await fetch(allPokemons.results[currentPokemonIndex].url);
@@ -119,8 +121,6 @@ async function getNextPokemonCard() {
 }
 
 async function getLastPokemonCard() {
-  console.log(currentPokemonIndex);
-  
   if (currentPokemonIndex > 0) {
     currentPokemonIndex--;
     let response = await fetch(allPokemons.results[currentPokemonIndex].url);
@@ -139,7 +139,7 @@ async function updatePokemonModel(pokemon) {
 }
 
 function showTab(tabId) { 
-  document.querySelectorAll('.tab-pane').forEach(tab => tab.classList.remove('active')); //all four tabs in Model
+  document.querySelectorAll('.tab-pane').forEach(tab => tab.classList.remove('active')); 
   document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
 
   document.getElementById(tabId).classList.add('active');
@@ -188,11 +188,9 @@ function showingSearchErrorMsg(value) {
 async function fetchEvolutionChain(pokemon) {
   try {
     let speciesResponse = await ((await fetch(pokemon.species.url)).json());
-    // let speciesData = await speciesResponse.json();
     let evolutionData = await (await fetch(speciesResponse.evolution_chain.url)).json();
-    // let evolutionData = await evolutionResponse.json();
-    let evoChain = [];
     let evoStage = evolutionData.chain;
+    let evoChain = [];
     let evolutionLevels = [];
     let level = 1; 
     while (evoStage) { 
@@ -209,12 +207,6 @@ async function fetchEvolutionChain(pokemon) {
 
 function renderEvolutionChart(evoChain, evolutionLevels) {
   let ctx = document.getElementById('evolutionChart').getContext('2d');
-
-  // Destroy the old chart if it exists (to prevent duplicate charts)
-  if (window.evolutionChart instanceof Chart) {
-    window.evolutionChart.destroy();
-  }
-
   window.evolutionChart = new Chart(ctx, {
     type: 'bar', // You can change it to 'bar', 'radar', 'line',etc.
     data: {
