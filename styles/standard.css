@@ -3,15 +3,21 @@
   margin: 0px;
   box-sizing:border-box;
 }
-html{
+html, body{
   scroll-behavior: smooth;
-}
-body{
   text-align: center;
   background-color: white !important;
-  min-height: 100vh;
-  /* scrollbar-width: thin !important;
-  scrollbar-color: #201692 !important; */
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+.main-container {
+  flex: 1; 
+  display: flex;
+  flex-direction: column;
+  max-width: 1920px;
+  margin: 0 auto;
+ 
 }
 a{
   text-decoration: none !important;
@@ -19,10 +25,14 @@ a{
   font-size: 16px;
 }
 main{
+  flex: 1 !important;
   text-align: center;
 }
 
 body::-webkit-scrollbar {
-  width: 8px; /* Adjust scrollbar width */
+  width: 8px; 
   background-color: #201692 !important;
+}
+.my-impressum{
+  padding: 20px 0;
 }

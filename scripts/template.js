@@ -28,7 +28,6 @@ function showPokemonModelAndDetailsHtml(pokemon) {
             <p><strong>Weight:</strong> ${pokemon.weight / 10} kg</p>
             <p><strong>Abilities:</strong> ${pokemon.abilities.map(a => a.ability.name).join(', ')}</p>
           </div>
-
           <div id="stats" class="tab-pane">
             <p><strong>HP:</strong> ${pokemon.stats[0].base_stat}</p>
             <p><strong>Attack:</strong> ${pokemon.stats[1].base_stat}</p>
@@ -37,11 +36,9 @@ function showPokemonModelAndDetailsHtml(pokemon) {
             <p><strong>Sp. Defense:</strong> ${pokemon.stats[4].base_stat}</p>
             <p><strong>Speed:</strong> ${pokemon.stats[5].base_stat}</p>
           </div>
-
           <div id="evolution" class="tab-pane">
             <canvas id="evolutionChart"></canvas>
           </div>
-
           <div id="moves" class="tab-pane">
             <p>Loading moves data...</p>
           </div>

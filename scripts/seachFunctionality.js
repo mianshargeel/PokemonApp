@@ -1,7 +1,7 @@
 async function searchPokemon() {
   let value  = document.getElementById('poko-search').value.toLowerCase().trim();
   pokemonContainerRef.innerHTML = '';
-  if (value === '' || value.length < 3) { return arrayOfAllPokemons.forEach(pokemon => renderPokemonCard(pokemon)) }
+  if (value.length == 0 ||value.length < 3) { return arrayOfAllPokemons.forEach(pokemon => renderPokemonCard(pokemon)) }
   try {
     let response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=1000`);
     let data = await response.json();

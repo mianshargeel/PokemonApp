@@ -85,7 +85,9 @@ async function fetchEvolutionChain(pokemon) {
 
 function renderEvolutionChart(evoChain, evolutionLevels) {
   let ctx = document.getElementById('evolutionChart').getContext('2d');
-  window.evolutionChart?.destroy(); 
+  if (window.evolutionChart instanceof Chart) {
+    window.evolutionChart?.destroy()
+  } 
   window.evolutionChart = new Chart(ctx, {
     type: 'bar', data: { labels: evoChain, 
       datasets: [{ label: 'Evolution Level', data: evolutionLevels,  borderColor: 'rgba(54, 162, 235, 1)',

@@ -10,12 +10,9 @@
   <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="./styles/modelTabs.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 </head>
-<body onload="init()">
-  <div class="main-container">
-    
-    <header class="navbar-container">
+<body>
+  <header class="navbar-container">
       <nav class="navbar myNav">
       <div class="nav-flex">
         <a class="navbar-brand navText" href="./index.html"> 
@@ -31,15 +28,23 @@
       </div>
     </nav>
     </header>
-
-    <h1 class="pokemon-heading">Pokemon Gallery</h1>
-    <main>
-      <div id="pokemonContainer" class="pokemon-container"></div>
-      <button onclick="loadMorePokemon()" id="load-more" class="load-more-btn">Load More Pokemon</button>
-      <p id="loading-text" class="loading-text" style="display: none;">Loading...</p>
-    </main>
-
-    <footer>
+   <main>
+            <div class="my-impressum"><h1>Impressum</h1><p>Angaben gemäß § 5 DDG</p><p>Shardzhil       Mukhammad <br> 
+              Hans-Schulten Str 10<br> 
+              51109 Cologne <br> 
+              </p><p> <strong>Vertreten durch: </strong><br>
+              Shardzhil Mukhammad<br>
+              </p><p><strong>Kontakt:</strong> <br>
+              Telefon: %2B4915126015827-%2B4915126015827<br>
+              E-Mail: <a href='mailto:shardzhil@gmail.com'>shardzhil@gmail.com</a></br></p><p><strong>Umsatzsteuer-ID: </strong> <br>
+              Umsatzsteuer-Identifikationsnummer gemäß §27a Umsatzsteuergesetz: Shardzhil<br><br>
+              <strong>Wirtschafts-ID: </strong><br>
+              Shardzhil<br>
+              </p><br> 
+              Impressum vom <a href="https://www.impressum-generator.de">Impressum Generator</a> der <a href="https://www.kanzlei-hasselbach.de/standorte/bonn/" rel="nofollow">Kanzlei Hasselbach, Bonn</a> 
+            </div>
+        </main>
+  <footer>
     <div class="footer-container">
       <a class="footer-logo" href="./index.html"><img src="./assets/img/logo.png" alt="footer-img">Pokedex</a>
       <div class="copy-right">
@@ -48,14 +53,5 @@
       </div>
     </div>
   </footer>
-
-  </div> <!-- End of main-container -->
-  
-
-  <script src="./scripts/pokemodModel.js"></script>
-  <script src="./scripts/seachFunctionality.js"></script>
-  <script src="./scripts/template.js"></script>
-  <script src="script.js"></script>
 </body>
-
 </html>

@@ -1,6 +1,10 @@
+.navbar-container {
+  width: 100%; 
+}
 .myNav {
-  background-color: #201692;
-  padding: 10px 20px;
+   width: 100% !important;
+  background-color: #201692 !important;
+  padding: 10px 20px !important;
 }
 
 .nav-flex {
@@ -28,8 +32,6 @@
   display: flex;
   gap: 3px;
 }
-
-
 /* end of Nav-Bar */
 .pokemon-heading{
   color: #201692;
@@ -38,6 +40,7 @@
   font-size: 56px;
 }
 .pokemon-container {
+  flex: 1;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -111,9 +114,52 @@
   justify-content: center;
   align-items: center;
 }
+footer{
+  flex-shrink: 0; /* Prevent footer from shrinking */
+  max-width: 1920px;
+  width: 100%;
+  height: 90px;
+  background-color: #201692;
+  color: white;
+}
+.footer-container{
+  width: 100%;
+  padding-top: 10px !important;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+.footer-logo img{
+  width: 70px;
+}
+.footer-logo {
+  font-size: 30px;
+}
+.copy-right p{
+  margin: 0px !important;
+  font-size: 14px !important;
+}
+.impressum{
+  font-size: 25px;
+   transition: transform 0.2s;
+}
+.impressum:hover{
+  cursor: pointer;
+  transform: scale(1.1);
+}
 @media screen and (max-width: 600px){
   .pokemon-heading{
     font-size: 44px;
+  }
+  .footer-logo{
+    font-size: 20px !important;
+  } 
+  .impressum-text{
+    font-size: 18px !important;
+  }
+  .copy-right p{
+    font-size: 12px !important;
   }
 }
 @media screen and (max-width: 500px){
