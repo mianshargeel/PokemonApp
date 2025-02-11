@@ -31,7 +31,7 @@ function init() {
   fetchPokemon();
 }
 
-async function fetchPokemonDetails(url) {//each fetchPokemonDetails(url) returns a promise because it is an async function.
+async function fetchPokemonDetails(url) {
   let res = await fetch(url);
   let pokemonDetails = await res.json();
   arrayOfAllPokemons.push(pokemonDetails);
@@ -47,17 +47,13 @@ async function fetchPokemon() {
   loadMoreButtonRef.style.display = 'none';
   try {
     let response = await fetch(`https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${limit}`);
-    let data = await response.json();
-    allPokemons = data;
-    await Promise.all(data.results.map(pokemon => fetchPokemonDetails(pokemon.url)));
-    //Promise.all([...]) takes an array of promises and waits for all of them to resolve.It fetches all Pokémon details in parallel.It ensures that fetchPokemon() does not continue until all Pokémon details are retrieved.
-
+    allPokemons= await response.json();
+    await Promise.all(allPokemons.results.map(pokemon => fetchPokemonDetails(pokemon.url)));  
   } catch (error) {
     loadTextRef.innerHTML = `Error Fetching Pokémon: ${error}`;
   }
   offset += limit;
 }
-
 
 function renderPokemonCard(pokemon) {
   let card = document.createElement('div');
@@ -88,144 +84,3 @@ function loadMorePokemon() {
   fetchPokemon();
 }
 
-function showPokemonModelAndDetails(pokemon) {
-  currentPokemonIndex = allPokemons.results.findIndex(p => p.name === pokemon.name); 
-  let overlay = document.createElement('div');
-  let model = document.createElement('div');
-  overlay.className = 'pokemon-overlay';
-  model.className = 'pokemon-model';
-  model.style.backgroundColor = colours[pokemon.types[0].type.name] || '#fff';
-  model.innerHTML = showPokemonModelAndDetailsHtml(pokemon);
-  overlay.appendChild(model);
-  document.body.appendChild(overlay);
-  document.body.classList.add('no-scroll');
-  updatePokemonModel(pokemon); 
-  overlay.onclick = hideOverlayWhenClickBesideModel; 
-}
-
-function hideOverlayWhenClickBesideModel(e) {
-  let overlay = document.querySelector('.pokemon-overlay')
-  if (e.target === overlay) {
-    overlay.remove();
-    document.body.classList.remove('no-scroll');
-    }
-}
-
-async function getNextPokemonCard() {
-  if (currentPokemonIndex < allPokemons.results.length - 1) {
-    currentPokemonIndex++;
-    let response = await fetch(allPokemons.results[currentPokemonIndex].url);
-    let nextPokemon = await response.json();
-    updatePokemonModel(nextPokemon);
-  } 
-}
-
-async function getLastPokemonCard() {
-  if (currentPokemonIndex > 0) {
-    currentPokemonIndex--;
-    let response = await fetch(allPokemons.results[currentPokemonIndex].url);
-    let prevPokemon = await response.json();
-    updatePokemonModel(prevPokemon);
-  } 
-}
-
-async function updatePokemonModel(pokemon) {
-  let model = document.querySelector('.pokemon-model');
-  model.style.backgroundColor = colours[pokemon.types[0].type.name];
-  model.innerHTML = showPokemonModelAndDetailsHtml(pokemon);
-
-  await fetchEvolutionChain(pokemon);
-  fetchMoves(pokemon);
-}
-
-function showTab(tabId) { 
-  document.querySelectorAll('.tab-pane').forEach(tab => tab.classList.remove('active')); 
-  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-
-  document.getElementById(tabId).classList.add('active');
-  document.querySelector(`span[onclick="showTab('${tabId}')"]`).classList.add('active');
-}
-
-function fetchMoves(pokemon) {
-  let movesList = pokemon.moves.slice(0, 10).map(move => move.move.name).join(', ');   
-  document.getElementById('moves').innerHTML = `<p>${movesList}</p>`;
-}
-
-function toggleMenu() {
-  const menu = document.querySelector(".menu-list");
-  if (menu.style.display === "none" || menu.style.display === "") {
-    menu.style.display = "block";
-  } else {
-    menu.style.display = "none";
-  }
-}
-
-async function searchPokemon() {
-  let value  = document.getElementById('poko-search').value.toLowerCase().trim();
-  pokemonContainerRef.innerHTML = '';
-  if (value === '' || value.length < 3) { return arrayOfAllPokemons.forEach(pokemon => renderPokemonCard(pokemon)) }
-  try {
-    let response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=1000`);
-    let data = await response.json();
-    let filteredPokemons = data.results.filter(pokemon => pokemon.name.toLowerCase().includes(value));
-    if (!filteredPokemons.length) return showingSearchErrorMsg(value);
-    for (let p of filteredPokemons) renderPokemonCard(await (await fetch(p.url)).json());
-  } catch (error) {
-     console.error("Error fetching Pokémon:", error);
-  }
-}
-
-function showingSearchErrorMsg(value) {
-  let errorMsg = document.createElement('p');
-  errorMsg.classList.add('search-error-popup');
-  errorMsg.innerHTML = `There is no Pokemon exit with the: "${value}"`;
-  pokemonContainerRef.appendChild(errorMsg);
-  setTimeout(() => {
-    errorMsg.remove();
-  }, 2000);
-}
-
-async function fetchEvolutionChain(pokemon) {
-  try {
-    let speciesResponse = await ((await fetch(pokemon.species.url)).json());
-    let evolutionData = await (await fetch(speciesResponse.evolution_chain.url)).json();
-    let evoStage = evolutionData.chain;
-    let evoChain = [];
-    let evolutionLevels = [];
-    let level = 1; 
-    while (evoStage) { 
-      evoChain.push(evoStage.species.name);
-      evolutionLevels.push(level);
-      evoStage = evoStage.evolves_to.length > 0 ? evoStage.evolves_to[0] : null;
-      level += 10;
-    }
-    renderEvolutionChart(evoChain, evolutionLevels); 
-  } catch (error) { 
-    console.error("Error fetching evolution chain:", error);
-  }
-}
-
-function renderEvolutionChart(evoChain, evolutionLevels) {
-  let ctx = document.getElementById('evolutionChart').getContext('2d');
-  window.evolutionChart = new Chart(ctx, {
-    type: 'bar', // You can change it to 'bar', 'radar', 'line',etc.
-    data: {
-      labels: evoChain, // Pokémon names
-      datasets: [{
-        label: 'Evolution Level',
-        data: evolutionLevels, // Evolution levels
-        borderColor: 'rgba(54, 162, 235, 1)',
-        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-        borderWidth: 2
-      }]
-    },
-    options: {
-      responsive: true,
-      scales: {
-        y: {
-          beginAtZero: true
-        }
-      }
-    }
-  });
-}

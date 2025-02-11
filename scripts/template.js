@@ -18,7 +18,7 @@ function showPokemonModelAndDetailsHtml(pokemon) {
         <div class="tab-menu">
           <span class="tab-btn active" onclick="showTab('about')">About</span>
           <span class="tab-btn" onclick="showTab('stats')">Base Stats</span>
-          <span class="tab-btn" onclick="showTab('evolution')">Evolution</span>
+          <span class="tab-btn" onclick="showTab('evolution')">Evolutions</span>
           <span class="tab-btn" onclick="showTab('moves')">Moves</span>
         </div>
         <div class="tab-content">
