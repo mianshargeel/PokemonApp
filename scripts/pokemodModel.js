@@ -85,17 +85,11 @@ async function fetchEvolutionChain(pokemon) {
 
 function renderEvolutionChart(evoChain, evolutionLevels) {
   let ctx = document.getElementById('evolutionChart').getContext('2d');
-  window.evolutionChart?.destroy(); // Destroy existing chart before creating a new one
+  window.evolutionChart?.destroy(); 
   window.evolutionChart = new Chart(ctx, {
-    type: 'bar', // You can change it to 'bar', 'radar', 'line',etc.
-    data: {
-      labels: evoChain, // Pokémon names
-      datasets: [{
-        label: 'Evolution Level',
-        data: evolutionLevels, // Evolution levels
-        borderColor: 'rgba(54, 162, 235, 1)',
-        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-        borderWidth: 2
+    type: 'bar', data: { labels: evoChain, 
+      datasets: [{ label: 'Evolution Level', data: evolutionLevels,  borderColor: 'rgba(54, 162, 235, 1)',
+      backgroundColor: 'rgba(54, 162, 235, 0.2)', borderWidth: 2
       }]
     },
     options: { responsive: true, scales: { y: { beginAtZero: true } } }
