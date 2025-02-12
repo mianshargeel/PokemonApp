@@ -5,17 +5,25 @@
   margin: 0 auto;
  width: 100%;
 }
+header{
+  background-color: #201692 !important;
+}
 main{
   max-width: 1920px;
   width: 100%;
   margin: 0 auto;
   flex: 1 !important;
   text-align: center;
+  background-color: #fff;
 }
 .navbar-container {
-  width: 100%; 
+  width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .myNav {
+  max-width: 1920px;
    width: 100% !important;
   background-color: #201692 !important;
   padding: 10px 20px !important;
@@ -129,19 +137,22 @@ main{
   align-items: center;
 }
 footer{
-  flex-shrink: 0; 
-  width: 100%;
+  flex-shrink: 0; /* Prevent footer from shrinking */
+  width: 100%; /* Full width */
   height: 90px;
   background-color: #201692;
   color: white;
+  display: flex;
+  justify-content: center; /* Center the content horizontally */
 }
 .footer-container{
-  width: 100%;
+  max-width: 1920px; /* Constrain content width */
+  width: 100%; /* Take full width up to max-width */
   padding-top: 10px !important;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 20px;
+  padding: 0 20px; /* Add padding for spacing */
 }
 .footer-logo img{
   width: 70px;

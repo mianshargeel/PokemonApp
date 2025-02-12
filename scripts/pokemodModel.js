@@ -16,8 +16,6 @@ function showPokemonModelAndDetails(pokemon) {
   document.body.classList.add('no-scroll');
   updatePokemonModel(pokemon); 
   overlay.onclick = hideOverlayWhenClickBesideModel; 
-
-  // Update button visibility based on the current Pokémon index
   updateButtonVisibility();
 }
 
@@ -27,17 +25,13 @@ function showPokemonModelAndDetails(pokemon) {
 function updateButtonVisibility() {
   const leftArrow = document.querySelector('#left-arrow');
   const rightArrow = document.querySelector('#right-arrow');
-
   if (currentPokemonIndex === 0) {
-    // If it's the first Pokémon, hide the "previous" button and show the "next" button
     leftArrow.classList.add('d-none-arrow');
     rightArrow.classList.remove('d-none-arrow');
   } else if (currentPokemonIndex === arrayOfAllPokemons.length - 1) {
-    // If it's the last Pokémon, hide the "next" button and show the "previous" button
     rightArrow.classList.add('d-none-arrow');
     leftArrow.classList.remove('d-none-arrow');
   } else {
-    // If it's neither the first nor the last Pokémon, show both buttons
     leftArrow.classList.remove('d-none-arrow');
     rightArrow.classList.remove('d-none-arrow');
   }
@@ -63,7 +57,7 @@ async function getNextPokemonCard() {
     currentPokemonIndex++;
     let nextPokemon = arrayOfAllPokemons[currentPokemonIndex];
     updatePokemonModel(nextPokemon);
-    updateButtonVisibility(); // Update button visibility after moving to the next Pokémon
+    updateButtonVisibility(); 
   }
 }
 
@@ -75,7 +69,7 @@ async function getLastPokemonCard() {
     currentPokemonIndex--;
     let prevPokemon = arrayOfAllPokemons[currentPokemonIndex]; 
     updatePokemonModel(prevPokemon);
-    updateButtonVisibility(); // Update button visibility after moving to the next Pokémon
+    updateButtonVisibility(); 
   } 
 }
 
