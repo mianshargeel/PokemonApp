@@ -1,5 +1,5 @@
 /**
- * Displays a modal with detailed information about a Pokémon.
+ * Displays a modal with detailed information about a Pokémon and updates button visibility.
  * 
  * @param {Object} pokemon - The Pokémon object to display in the modal.
  */
@@ -16,8 +16,32 @@ function showPokemonModelAndDetails(pokemon) {
   document.body.classList.add('no-scroll');
   updatePokemonModel(pokemon); 
   overlay.onclick = hideOverlayWhenClickBesideModel; 
+
+  // Update button visibility based on the current Pokémon index
+  updateButtonVisibility();
 }
 
+/**
+ * Updates the visibility of the "next" and "previous" buttons based on the current Pokémon index.
+ */
+function updateButtonVisibility() {
+  const leftArrow = document.querySelector('#left-arrow');
+  const rightArrow = document.querySelector('#right-arrow');
+
+  if (currentPokemonIndex === 0) {
+    // If it's the first Pokémon, hide the "previous" button and show the "next" button
+    leftArrow.classList.add('d-none-arrow');
+    rightArrow.classList.remove('d-none-arrow');
+  } else if (currentPokemonIndex === arrayOfAllPokemons.length - 1) {
+    // If it's the last Pokémon, hide the "next" button and show the "previous" button
+    rightArrow.classList.add('d-none-arrow');
+    leftArrow.classList.remove('d-none-arrow');
+  } else {
+    // If it's neither the first nor the last Pokémon, show both buttons
+    leftArrow.classList.remove('d-none-arrow');
+    rightArrow.classList.remove('d-none-arrow');
+  }
+}
 /**
  * Hides the Pokémon modal when clicking outside of it.
  * 
@@ -39,9 +63,7 @@ async function getNextPokemonCard() {
     currentPokemonIndex++;
     let nextPokemon = arrayOfAllPokemons[currentPokemonIndex];
     updatePokemonModel(nextPokemon);
-    if (currentPokemonIndex === arrayOfAllPokemons.length - 1) {
-      document.querySelector('#right-arrow').classList.add('d-none-arrow'); 
-    }
+    updateButtonVisibility(); // Update button visibility after moving to the next Pokémon
   }
 }
 
@@ -53,9 +75,7 @@ async function getLastPokemonCard() {
     currentPokemonIndex--;
     let prevPokemon = arrayOfAllPokemons[currentPokemonIndex]; 
     updatePokemonModel(prevPokemon);
-    if (currentPokemonIndex == 0) {
-      document.querySelector('#left-arrow').classList.add('d-none-arrow');
-    }
+    updateButtonVisibility(); // Update button visibility after moving to the next Pokémon
   } 
 }
 
