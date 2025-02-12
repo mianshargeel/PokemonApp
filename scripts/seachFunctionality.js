@@ -19,6 +19,6 @@ function showingSearchErrorMsg(value) {
   errorMsg.innerHTML = `There is no Pokemon exit with the: "${value}"`;
   pokemonContainerRef.appendChild(errorMsg);
   setTimeout(() => {
-    errorMsg.remove();
+    errorMsg.remove(); 
   }, 2000);
 }

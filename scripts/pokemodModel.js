@@ -24,9 +24,13 @@ function hideOverlayWhenClickBesideModel(e) {
 async function getNextPokemonCard() {
   if (currentPokemonIndex < arrayOfAllPokemons.length - 1) {
     currentPokemonIndex++;
-    let nextPokemon = arrayOfAllPokemons[currentPokemonIndex]; 
+    console.log(currentPokemonIndex, '--', arrayOfAllPokemons.length - 1);
+    let nextPokemon = arrayOfAllPokemons[currentPokemonIndex];
     updatePokemonModel(nextPokemon);
-  } 
+    if (currentPokemonIndex === arrayOfAllPokemons.length - 1) {
+      document.querySelector('#right-arrow').classList.add('d-none-arrow'); //at last pokemon hiding right-arrow btn
+    }
+  }
 }
 
 async function getLastPokemonCard() {
@@ -34,6 +38,9 @@ async function getLastPokemonCard() {
     currentPokemonIndex--;
     let prevPokemon = arrayOfAllPokemons[currentPokemonIndex]; 
     updatePokemonModel(prevPokemon);
+    if (currentPokemonIndex == 0) {
+      document.querySelector('#left-arrow').classList.add('d-none-arrow');//at before first pokemon hiding left-arrow btn
+    }
   } 
 }
 

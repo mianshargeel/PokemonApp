@@ -44,8 +44,8 @@ function showPokemonModelAndDetailsHtml(pokemon) {
           </div>
         </div>   
         <div class='poko-arrows'>
-          <img onclick='getLastPokemonCard()' class='leftRight-arrows' src="./assets/img/left.png" alt="" />
-          <img onclick='getNextPokemonCard()' class='leftRight-arrows' src="./assets/img/right.png" alt="" />
+          <img id='left-arrow' onclick='getLastPokemonCard()' class='leftRight-arrows' src="./assets/img/left.png" alt="" />
+          <img id='right-arrow' onclick='getNextPokemonCard()' class='leftRight-arrows' src="./assets/img/right.png" alt="" />
         </div>   
     </div>
   `;
