@@ -188,6 +188,17 @@ footer{
     height: 70px;
   }
 }
+@media screen and (max-width: 370px){
+  .footer-container{
+    padding: 0px;
+  }
+  .footer-logo{
+    font-size: 16px !important;
+  }
+  .pokemon-heading{
+    font-size: 28px;
+  }
+}
 
 
 

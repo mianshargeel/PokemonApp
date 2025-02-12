@@ -1,9 +1,3 @@
-/**
- * This a Pokemon-web-app-project
- * i have used fetch-api function here to get pokemon from Api
- * and have used Some concept of Advance JS i-e async-await, Promise.all(), chart.js, tyr-catch-block, filte() with callback arrow-function, in this Project.
- * First of all, i am fetching Pokemons from Api and showing in Dom then on-click on each pokemon user can see a pokemon-model with big screen and with the detail of that Pokemon, In Model i have used chart.js to show grafically some Abilities of Pokemon in grafical form. Durring creating this Project i have followed the Check-list from our Campus.
- */
 const colours = {
 	normal: '#A8A77A',
 	fire: '#EE8130',
@@ -32,13 +26,18 @@ let limit = 20;
 let arrayOfAllPokemons = [];
 let currentPokemonIndex = 0;
  
+/**
+ * Initializes the application by fetching the initial list of Pokémon.
+ */
 function init() { 
   fetchPokemon();
 }
+
 /**
- * Through Api getting we are Pokemons one by one and at every response we are getting a Promise, I am using Promise.all() with await to make sure that all required Pokemon to fetch.
- * @param {*} pokemonList using to store all fetched-pokemon from Api
- * @returns 
+ * Fetches detailed information for a list of Pokémon.
+ * 
+ * @param {Object} pokemonList - The list of Pokémon to fetch details for.
+ * @returns {Promise<Array>} A promise that resolves to an array of detailed Pokémon information.
  */
 async function fetchPokemonDetails(pokemonList) {
   loadTextRef.style.display = 'block';
@@ -47,8 +46,12 @@ async function fetchPokemonDetails(pokemonList) {
     pokemonList.results.map(pokemon => fetch(pokemon.url).then(res => res.json()))
   );
 }
+
 /**
- * using fetchPokemonDetails(pokemonList) assinging in pokemonDetails and then through Spread-operator Pushing all Pokemon in Globally declared arrayOfAllPokemons, then i sorting ids to keeping clash of ids durring fetching data, to make sure in arrayOfAllPokemons all ids are in a sequence.Then Rendering the the Pokemon using renderPokemonCard(pokemon).
+ * Fetches a list of Pokémon from the PokeAPI and renders their cards.
+ * 
+ * @async
+ * @throws {Error} If there is an error fetching the Pokémon data.
  */
 async function fetchPokemon() {
   try {
@@ -62,9 +65,15 @@ async function fetchPokemon() {
     loadMoreButtonRef.style.display = 'block';
   } catch (error) {
     loadTextRef.innerHTML = `Error Fetching Pokémon: ${error}`;
-  }offset += limit;
+  }
+  offset += limit;
 }
 
+/**
+ * Renders a Pokémon card and appends it to the Pokémon container.
+ * 
+ * @param {Object} pokemon - The Pokémon object containing details to render.
+ */
 function renderPokemonCard(pokemon) {
   let card = document.createElement('div');
   card.classList.add('pokemon-card');
@@ -76,6 +85,12 @@ function renderPokemonCard(pokemon) {
   pokemonContainerRef.appendChild(card);
 }
 
+/**
+ * Creates and returns a container with the Pokémon's types.
+ * 
+ * @param {Object} pokemon - The Pokémon object containing type information.
+ * @returns {HTMLElement} A div element containing the Pokémon's types.
+ */
 function creatingPokemonTypes(pokemon) {
   let pokemonTypesRef = document.createElement('div');
   pokemonTypesRef.classList.add('pokemon-types');
@@ -90,7 +105,9 @@ function creatingPokemonTypes(pokemon) {
   return pokemonTypesRef;
 }
 
+/**
+ * Loads more Pokémon by fetching the next set of Pokémon data.
+ */
 function loadMorePokemon() {
   fetchPokemon();
 }
-

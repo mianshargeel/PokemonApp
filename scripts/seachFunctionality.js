@@ -1,3 +1,9 @@
+/**
+ * Searches for Pokémon based on the user's input and displays the results.
+ * If the search input is empty or less than 3 characters, it displays all Pokémon.
+ * 
+ * @async
+ */
 async function searchPokemon() {
   let value  = document.getElementById('poko-search').value.toLowerCase().trim();
   pokemonContainerRef.innerHTML = '';
@@ -13,6 +19,11 @@ async function searchPokemon() {
   }
 }
 
+/**
+ * Displays an error message when no Pokémon match the search criteria.
+ * 
+ * @param {string} value - The search term that resulted in no matches.
+ */
 function showingSearchErrorMsg(value) {
   let errorMsg = document.createElement('p');
   errorMsg.classList.add('search-error-popup');

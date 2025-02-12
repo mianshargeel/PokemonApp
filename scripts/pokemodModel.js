@@ -1,3 +1,8 @@
+/**
+ * Displays a modal with detailed information about a Pokémon.
+ * 
+ * @param {Object} pokemon - The Pokémon object to display in the modal.
+ */
 function showPokemonModelAndDetails(pokemon) {
   currentPokemonIndex = arrayOfAllPokemons.findIndex(p => p.name === pokemon.name); 
   let overlay = document.createElement('div');
@@ -13,37 +18,52 @@ function showPokemonModelAndDetails(pokemon) {
   overlay.onclick = hideOverlayWhenClickBesideModel; 
 }
 
+/**
+ * Hides the Pokémon modal when clicking outside of it.
+ * 
+ * @param {Event} e - The click event.
+ */
 function hideOverlayWhenClickBesideModel(e) {
   let overlay = document.querySelector('.pokemon-overlay')
   if (e.target === overlay) {
     overlay.remove();
     document.body.classList.remove('no-scroll');
-    }
+  }
 }
 
+/**
+ * Displays the next Pokémon in the modal.
+ */
 async function getNextPokemonCard() {
   if (currentPokemonIndex < arrayOfAllPokemons.length - 1) {
     currentPokemonIndex++;
-    console.log(currentPokemonIndex, '--', arrayOfAllPokemons.length - 1);
     let nextPokemon = arrayOfAllPokemons[currentPokemonIndex];
     updatePokemonModel(nextPokemon);
     if (currentPokemonIndex === arrayOfAllPokemons.length - 1) {
-      document.querySelector('#right-arrow').classList.add('d-none-arrow'); //at last pokemon hiding right-arrow btn
+      document.querySelector('#right-arrow').classList.add('d-none-arrow'); 
     }
   }
 }
 
+/**
+ * Displays the previous Pokémon in the modal.
+ */
 async function getLastPokemonCard() {
   if (currentPokemonIndex > 0) {
     currentPokemonIndex--;
     let prevPokemon = arrayOfAllPokemons[currentPokemonIndex]; 
     updatePokemonModel(prevPokemon);
     if (currentPokemonIndex == 0) {
-      document.querySelector('#left-arrow').classList.add('d-none-arrow');//at before first pokemon hiding left-arrow btn
+      document.querySelector('#left-arrow').classList.add('d-none-arrow');
     }
   } 
 }
 
+/**
+ * Updates the modal with the details of the specified Pokémon.
+ * 
+ * @param {Object} pokemon - The Pokémon object to update the modal with.
+ */
 async function updatePokemonModel(pokemon) {
   let model = document.querySelector('.pokemon-model');
   model.style.backgroundColor = colours[pokemon.types[0].type.name];
@@ -53,6 +73,11 @@ async function updatePokemonModel(pokemon) {
   fetchMoves(pokemon);
 }
 
+/**
+ * Activates the specified tab and deactivates others.
+ * 
+ * @param {string} tabId - The ID of the tab to activate.
+ */
 function showTab(tabId) { 
   document.querySelectorAll('.tab-pane').forEach(tab => tab.classList.remove('active')); 
   document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
@@ -61,11 +86,21 @@ function showTab(tabId) {
   document.querySelector(`span[onclick="showTab('${tabId}')"]`).classList.add('active');
 }
 
+/**
+ * Fetches and displays the first 10 moves of the specified Pokémon.
+ * 
+ * @param {Object} pokemon - The Pokémon object to fetch moves for.
+ */
 function fetchMoves(pokemon) {
   let movesList = pokemon.moves.slice(0, 10).map(move => move.move.name).join(', ');   
   document.getElementById('moves').innerHTML = `<p>${movesList}</p>`;
 }
 
+/**
+ * Processes the evolution chain data to extract evolution stages and levels.
+ * 
+ * @param {Object} evolutionData - The evolution chain data to process.
+ */
 function processEvolutionChain(evolutionData) {
   let evoStage = evolutionData.chain, evoChain = [], levels = [], level = 1;
   while (evoStage) {
@@ -77,6 +112,11 @@ function processEvolutionChain(evolutionData) {
   renderEvolutionChart(evoChain, levels);
 }
 
+/**
+ * Fetches the evolution chain for the specified Pokémon.
+ * 
+ * @param {Object} pokemon - The Pokémon object to fetch the evolution chain for.
+ */
 async function fetchEvolutionChain(pokemon) {
   try {
     let speciesRes = await fetch(pokemon.species.url);
@@ -88,6 +128,12 @@ async function fetchEvolutionChain(pokemon) {
   }
 }
 
+/**
+ * Renders a chart displaying the Pokémon's evolution stages and levels.
+ * 
+ * @param {Array<string>} evoChain - The names of the Pokémon's evolution stages.
+ * @param {Array<number>} evolutionLevels - The levels at which the Pokémon evolves.
+ */
 function renderEvolutionChart(evoChain, evolutionLevels) {
   let ctx = document.getElementById('evolutionChart').getContext('2d');
   if (window.evolutionChart instanceof Chart) {
