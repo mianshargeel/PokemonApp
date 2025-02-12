@@ -94,7 +94,6 @@ function renderPokemonCard(pokemon) {
 function creatingPokemonTypes(pokemon) {
   let pokemonTypesRef = document.createElement('div');
   pokemonTypesRef.classList.add('pokemon-types');
-
   pokemon.types.forEach(typeObj => {
     let typeSpanRef = document.createElement('span');
     typeSpanRef.classList.add('poko-type');
