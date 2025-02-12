@@ -24,9 +24,7 @@ function hideOverlayWhenClickBesideModel(e) {
 async function getNextPokemonCard() {
   if (currentPokemonIndex < arrayOfAllPokemons.length - 1) {
     currentPokemonIndex++;
-    let nextPokemon = arrayOfAllPokemons[currentPokemonIndex]; // Directly use the Pokémon object
-    console.log(arrayOfAllPokemons[currentPokemonIndex]);
-    
+    let nextPokemon = arrayOfAllPokemons[currentPokemonIndex]; 
     updatePokemonModel(nextPokemon);
   } 
 }
@@ -42,6 +40,8 @@ async function getLastPokemonCard() {
 async function updatePokemonModel(pokemon) {
   let model = document.querySelector('.pokemon-model');
   model.style.backgroundColor = colours[pokemon.types[0].type.name];
+  model.innerHTML = showPokemonModelAndDetailsHtml(pokemon);
+
   await fetchEvolutionChain(pokemon);
   fetchMoves(pokemon);
 }
